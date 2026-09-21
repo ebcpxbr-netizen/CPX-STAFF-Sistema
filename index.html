@@ -6,18 +6,16 @@
 <title>CPX STAFF — Sistema Administrativo</title>
 <style>
 :root{
- --bg:#07070b;--panel:#101017;--panel2:#15151f;--border:#272735;
- --text:#f5f5f7;--muted:#8d8d9d;--purple:#8b5cf6;--purple2:#6d28d9;
- --green:#22c55e;--red:#ef4444;--blue:#3b82f6;--yellow:#f59e0b;
+--bg:#07070b;--panel:#101017;--panel2:#15151f;--border:#272735;
+--text:#f5f5f7;--muted:#8d8d9d;--purple:#8b5cf6;--purple2:#6d28d9;
+--green:#22c55e;--red:#ef4444;--blue:#3b82f6;--yellow:#f59e0b
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Inter,Segoe UI,Arial,sans-serif;background:
 radial-gradient(circle at 15% 0%,rgba(139,92,246,.15),transparent 30%),
 radial-gradient(circle at 85% 100%,rgba(59,130,246,.09),transparent 28%),var(--bg);
 color:var(--text);min-height:100vh}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-.hidden{display:none!important}
+button,input,textarea,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 .app{min-height:100vh;display:flex}
 .sidebar{width:250px;background:rgba(10,10,15,.92);border-right:1px solid var(--border);padding:22px 14px;position:fixed;inset:0 auto 0 0;z-index:20}
 .logo{display:flex;align-items:center;gap:12px;padding:5px 10px 28px}
@@ -25,233 +23,257 @@ button{cursor:pointer}
 .logo b{font-size:18px}.logo small{color:var(--muted);display:block;font-size:10px;margin-top:2px}
 .nav-title{font-size:10px;color:#626272;text-transform:uppercase;letter-spacing:1.5px;padding:14px 12px 8px}
 .nav button{width:100%;border:0;background:transparent;color:#aaaabc;text-align:left;padding:12px;border-radius:11px;margin:2px 0;display:flex;align-items:center;gap:11px;transition:.2s}
-.nav button:hover,.nav button.active{background:rgba(139,92,246,.13);color:white}
-.nav button.active{box-shadow:inset 3px 0 var(--purple)}
+.nav button:hover,.nav button.active{background:rgba(139,92,246,.13);color:white}.nav button.active{box-shadow:inset 3px 0 var(--purple)}
 .bottom{position:absolute;bottom:18px;left:14px;right:14px}
 .user-mini{background:var(--panel);border:1px solid var(--border);padding:12px;border-radius:13px;font-size:12px}
 .user-mini span{color:var(--muted);display:block;margin-top:3px}
 .main{margin-left:250px;width:calc(100% - 250px);padding:28px;min-height:100vh}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
-.top h1{font-size:27px}.top p{color:var(--muted);font-size:13px;margin-top:5px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.top h1{font-size:27px}.top p{color:var(--muted);font-size:13px;margin-top:5px}
 .badge{padding:7px 11px;border:1px solid rgba(34,197,94,.25);background:rgba(34,197,94,.08);color:#7ff0a1;border-radius:20px;font-size:11px}
 .page{display:none}.page.active{display:block}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:18px}
 .card{background:linear-gradient(145deg,rgba(21,21,31,.96),rgba(12,12,18,.96));border:1px solid var(--border);border-radius:17px;padding:20px;box-shadow:0 15px 45px rgba(0,0,0,.18)}
 .stat{position:relative;overflow:hidden}.stat:after{content:"";position:absolute;width:80px;height:80px;border-radius:50%;right:-25px;top:-30px;background:rgba(139,92,246,.1)}
 .stat .ico{font-size:20px;margin-bottom:15px}.stat strong{font-size:30px;display:block}.stat span{font-size:12px;color:var(--muted)}
-.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
-.section-head h2{font-size:16px}.section-head p{font-size:12px;color:var(--muted)}
-.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
-.field{margin-bottom:14px}.field label{display:block;font-size:11px;color:#aaaaba;margin-bottom:7px;text-transform:uppercase;letter-spacing:.6px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.section-head h2{font-size:16px}.section-head p{font-size:12px;color:var(--muted)}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;color:#aaaaba;margin-bottom:7px;text-transform:uppercase;letter-spacing:.6px}
 input,textarea,select{width:100%;background:#0b0b11;border:1px solid #2a2a38;color:white;border-radius:10px;padding:12px 13px;outline:none;transition:.2s}
 input:focus,textarea:focus,select:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(139,92,246,.09)}
-textarea{min-height:105px;resize:vertical}
-.actions{display:flex;gap:10px;margin-top:5px}
-.btn{border:0;border-radius:10px;padding:11px 16px;color:white;background:#242432;font-weight:700;font-size:12px}
-.btn.primary{background:linear-gradient(135deg,var(--purple),var(--purple2));box-shadow:0 8px 25px rgba(109,40,217,.22)}
-.btn.green{background:linear-gradient(135deg,#16a34a,#15803d)}.btn.red{background:#45151a;color:#ff9696}
-.btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+textarea{min-height:105px;resize:vertical}.actions{display:flex;gap:10px;margin-top:5px}
+.btn{border:0;border-radius:10px;padding:11px 16px;color:white;background:#242432;font-weight:700;font-size:12px}.btn.primary{background:linear-gradient(135deg,var(--purple),var(--purple2));box-shadow:0 8px 25px rgba(109,40,217,.22)}
+.btn.green{background:linear-gradient(135deg,#16a34a,#15803d)}.btn.red{background:#45151a;color:#ff9696}.btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
 .login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
 .login-box{width:min(430px,100%);background:rgba(16,16,23,.94);border:1px solid var(--border);border-radius:24px;padding:35px;box-shadow:0 30px 100px rgba(0,0,0,.55)}
-.login-brand{text-align:center;margin-bottom:27px}.login-brand .logo-icon{margin:0 auto 14px;width:58px;height:58px}
-.login-brand h1{font-size:24px}.login-brand p{color:var(--muted);font-size:12px;margin-top:5px}
-.switch{display:flex;background:#09090e;padding:4px;border-radius:10px;margin-bottom:20px}
-.switch button{flex:1;border:0;background:transparent;color:#777;padding:9px;border-radius:7px;font-size:11px}.switch button.on{background:#22222e;color:white}
+.login-brand{text-align:center;margin-bottom:27px}.login-brand .logo-icon{margin:0 auto 14px;width:58px;height:58px}.login-brand h1{font-size:24px}.login-brand p{color:var(--muted);font-size:12px;margin-top:5px}
+.switch{display:flex;background:#09090e;padding:4px;border-radius:10px;margin-bottom:20px}.switch button{flex:1;border:0;background:transparent;color:#777;padding:9px;border-radius:7px;font-size:11px}.switch button.on{background:#22222e;color:white}
 .error{color:#ff7c7c;font-size:12px;margin:8px 0;display:none}
-.checks{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.check{border:1px solid #2a2a38;background:#0b0b11;padding:12px;border-radius:10px;display:flex;gap:9px;align-items:center;cursor:pointer}
-.check input{width:auto;accent-color:var(--purple)}
-.staff-list{display:grid;gap:10px}
-.staff-row{display:flex;align-items:center;justify-content:space-between;background:#0d0d14;border:1px solid var(--border);padding:15px;border-radius:12px}
-.avatar{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#6d28d9,#312e81);display:grid;place-items:center;font-weight:800}
-.staff-info{display:flex;align-items:center;gap:12px}.staff-info b{font-size:13px}.staff-info span{font-size:11px;color:var(--muted);display:block;margin-top:3px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:9px}.check{border:1px solid #2a2a38;background:#0b0b11;padding:12px;border-radius:10px;display:flex;gap:9px;align-items:center;cursor:pointer}.check input{width:auto;accent-color:var(--purple)}
+.staff-list{display:grid;gap:10px}.staff-row{display:flex;align-items:center;justify-content:space-between;background:#0d0d14;border:1px solid var(--border);padding:15px;border-radius:12px}
+.avatar{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#6d28d9,#312e81);display:grid;place-items:center;font-weight:800}.staff-info{display:flex;align-items:center;gap:12px}.staff-info b{font-size:13px}.staff-info span{font-size:11px;color:var(--muted);display:block;margin-top:3px}
 .pill{font-size:10px;padding:5px 8px;border-radius:20px;background:rgba(139,92,246,.12);color:#bca8ff}
 .table{width:100%;border-collapse:collapse}.table th,.table td{padding:12px 8px;text-align:left;border-bottom:1px solid #22222d;font-size:11px}.table th{color:#777787;text-transform:uppercase;font-size:9px}
 .empty{text-align:center;color:var(--muted);padding:30px;font-size:12px}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;place-items:center;z-index:50;padding:20px}.modal.show{display:grid}
-.modal-box{width:min(600px,100%);background:#111119;border:1px solid var(--border);border-radius:18px;padding:23px;max-height:90vh;overflow:auto}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;place-items:center;z-index:50;padding:20px}.modal.show{display:grid}.modal-box{width:min(650px,100%);background:#111119;border:1px solid var(--border);border-radius:18px;padding:23px;max-height:90vh;overflow:auto}
 .toast{position:fixed;right:20px;bottom:20px;background:#171720;border:1px solid #333342;padding:13px 17px;border-radius:12px;font-size:12px;z-index:100;display:none;box-shadow:0 15px 40px #000}
+.detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px}.detail-box{background:#0b0b11;border:1px solid #292936;border-radius:10px;padding:13px}.detail-box b{font-size:20px;display:block}.detail-box span{font-size:10px;color:#888}
 @media(max-width:850px){.sidebar{width:70px;padding:15px 8px}.logo{padding:5px 4px 25px}.logo>div:last-child,.nav-title,.nav button span,.bottom{display:none}.nav button{justify-content:center}.main{margin-left:70px;width:calc(100% - 70px);padding:18px}.grid{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}}
-@media(max-width:520px){.grid{grid-template-columns:1fr 1fr}.top h1{font-size:21px}.card{padding:15px}.checks{grid-template-columns:1fr}.staff-row{align-items:flex-start;gap:10px;flex-direction:column}}
+@media(max-width:520px){.grid{grid-template-columns:1fr 1fr}.top h1{font-size:21px}.card{padding:15px}.checks{grid-template-columns:1fr}.staff-row{align-items:flex-start;gap:10px;flex-direction:column}.detail-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
 <div id="loginScreen" class="login-wrap">
-  <div class="login-box">
-    <div class="login-brand">
-      <div class="logo-icon">CPX</div>
-      <h1>CPX STAFF</h1>
-      <p>Sistema de gerenciamento administrativo</p>
-    </div>
-    <div class="switch">
-      <button id="tabStaff" class="on" onclick="setLogin('staff')">STAFF</button>
-      <button id="tabFund" onclick="setLogin('fund')">FUNDAÇÃO</button>
-    </div>
-    <div class="field"><label>Usuário</label><input id="loginUser" placeholder="Digite seu usuário"></div>
-    <div class="field"><label>Senha</label><input id="loginPass" type="password" placeholder="Digite sua senha"></div>
-    <div id="loginError" class="error">Usuário ou senha incorretos.</div>
-    <button class="btn primary" style="width:100%;padding:13px" onclick="login()">ENTRAR NO PAINEL</button>
-    <p style="text-align:center;color:#666;font-size:10px;margin-top:18px">CPX STAFF • Sistema local de demonstração</p>
-  </div>
-</div>
+<div class="login-box">
+<div class="login-brand"><div class="logo-icon">CPX</div><h1>CPX STAFF</h1><p>Sistema de gerenciamento administrativo</p></div>
+<div class="switch"><button id="tabStaff" class="on" onclick="setLogin('staff')">STAFF</button><button id="tabFund" onclick="setLogin('fund')">FUNDAÇÃO</button></div>
+<div class="field"><label>Usuário</label><input id="loginUser" placeholder="Digite seu usuário"></div>
+<div class="field"><label>Senha</label><input id="loginPass" type="password" placeholder="Digite sua senha" onkeydown="if(event.key==='Enter')login()"></div>
+<div id="loginError" class="error">Usuário ou senha incorretos.</div>
+<button class="btn primary" style="width:100%;padding:13px" onclick="login()">ENTRAR NO PAINEL</button>
+<p style="text-align:center;color:#666;font-size:10px;margin-top:18px">CPX STAFF • Sistema local de demonstração</p>
+</div></div>
 
 <div id="app" class="app hidden">
 <aside class="sidebar">
-  <div class="logo"><div class="logo-icon">CPX</div><div><b>CPX STAFF</b><small>ADMIN SYSTEM</small></div></div>
-  <div class="nav-title">Menu principal</div>
-  <div class="nav">
-    <button class="active" onclick="showPage('dashboard',this)">◈ <span>Dashboard</span></button>
-    <button onclick="showPage('consultar',this)">⌕ <span>Consultar Staff</span></button>
-    <button id="fundNav" onclick="showPage('fundacao',this)">♛ <span>Fundação</span></button>
-    <button id="ticketNav" onclick="showPage('tickets',this)">▣ <span>Registrar Atendimento</span></button>
-  </div>
-  <div class="bottom"><div class="user-mini"><b id="sideUser">—</b><span id="sideRole">—</span></div><button class="btn red" style="width:100%;margin-top:8px" onclick="logout()">Sair</button></div>
+<div class="logo"><div class="logo-icon">CPX</div><div><b>CPX STAFF</b><small>ADMIN SYSTEM</small></div></div>
+<div class="nav-title">Menu principal</div>
+<div class="nav">
+<button class="active" onclick="showPage('dashboard',this)">◈ <span>Dashboard</span></button>
+<button onclick="showPage('consultar',this)">⌕ <span>Consultar Staff</span></button>
+<button id="fundNav" onclick="showPage('fundacao',this)">♛ <span>Fundação</span></button>
+<button id="ticketNav" onclick="showPage('tickets',this)">▣ <span>Registrar Atendimento</span></button>
+</div>
+<div class="bottom"><div class="user-mini"><b id="sideUser">—</b><span id="sideRole">—</span></div><button class="btn red" style="width:100%;margin-top:8px" onclick="logout()">Sair</button></div>
 </aside>
 
 <main class="main">
 <header class="top"><div><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Visão geral do sistema</p></div><div class="badge">● SISTEMA ONLINE</div></header>
 
 <section id="dashboard" class="page active">
- <div class="grid">
-  <div class="card stat"><div class="ico">👥</div><strong id="statStaff">0</strong><span>Staffs cadastrados</span></div>
-  <div class="card stat"><div class="ico">🎫</div><strong id="statTickets">0</strong><span>Tickets atendidos</span></div>
-  <div class="card stat"><div class="ico">📋</div><strong id="statToday">0</strong><span>Atendimentos hoje</span></div>
-  <div class="card stat"><div class="ico">✓</div><strong id="statTypes">0</strong><span>Tipos utilizados</span></div>
- </div>
- <div class="card">
-  <div class="section-head"><div><h2>Atendimentos recentes</h2><p>Últimos registros realizados pelos Staffs</p></div></div>
-  <div id="recent"></div>
- </div>
+<div class="grid">
+<div class="card stat"><div class="ico">👥</div><strong id="statStaff">0</strong><span>Staffs cadastrados</span></div>
+<div class="card stat"><div class="ico">🎫</div><strong id="statTickets">0</strong><span>Tickets atendidos</span></div>
+<div class="card stat"><div class="ico">📋</div><strong id="statToday">0</strong><span>Atendimentos hoje</span></div>
+<div class="card stat"><div class="ico">✓</div><strong id="statTypes">0</strong><span>Tipos utilizados</span></div>
+</div>
+<div class="card"><div class="section-head"><div><h2>Atendimentos recentes</h2><p>Últimos registros realizados pelos Staffs</p></div></div><div id="recent"></div></div>
 </section>
 
 <section id="fundacao" class="page">
- <div class="card">
-  <div class="section-head"><div><h2>👑 Cadastro de Staff</h2><p>A Fundação fornece as credenciais de acesso ao Staff.</p></div></div>
-  <div class="form-grid">
-   <div class="field"><label>Nome / Usuário do Staff</label><input id="newUser" placeholder="Ex.: STAFF DYLAN"></div>
-   <div class="field"><label>Useridst</label><input id="newId" placeholder="Ex.: 123456789"></div>
-   <div class="field"><label>Senha de Login Staff</label><input id="newPass" placeholder="Ex.: 1234"></div>
-   <div class="field"><label>Cargo</label><select id="newCargo"><option>STAFF</option><option>MODERADOR</option><option>SUPERVISOR</option><option>ADMINISTRADOR</option></select></div>
-  </div>
-  <div class="actions"><button class="btn primary" onclick="createStaff()">+ CADASTRAR STAFF</button></div>
- </div>
- <div class="card" style="margin-top:15px"><div class="section-head"><h2>Staffs cadastrados</h2></div><div id="staffList" class="staff-list"></div></div>
+<div class="card">
+<div class="section-head"><div><h2>👑 Cadastro de Staff</h2><p>A Fundação fornece as credenciais de acesso ao Staff.</p></div></div>
+<div class="form-grid">
+<div class="field"><label>Nome / Usuário do Staff</label><input id="newUser" placeholder="Ex.: STAFF DYLAN"></div>
+<div class="field"><label>Useridst</label><input id="newId" placeholder="Ex.: 123456789"></div>
+<div class="field"><label>Senha de Login Staff</label><input id="newPass" placeholder="Ex.: 1234"></div>
+<div class="field"><label>Cargo</label><select id="newCargo"><option>STAFF</option><option>MODERADOR</option><option>SUPERVISOR</option><option>ADMINISTRADOR</option></select></div>
+</div>
+<div class="actions"><button class="btn primary" onclick="createStaff()">+ CADASTRAR STAFF</button></div>
+</div>
+<div class="card" style="margin-top:15px"><div class="section-head"><h2>Staffs cadastrados</h2></div><div id="staffList" class="staff-list"></div></div>
 </section>
 
 <section id="tickets" class="page">
- <div class="card">
-  <div class="section-head"><div><h2>🎫 Registrar Atendimento</h2><p>Registre cada ticket atendido pelo Staff.</p></div></div>
-  <div class="field"><label>Tipo de Ticket</label>
-   <div class="checks">
-    <label class="check"><input type="radio" name="tipo" value="Dúvidas"> Dúvidas</label>
-    <label class="check"><input type="radio" name="tipo" value="Contestações de Punição"> Contestações de Punição</label>
-    <label class="check"><input type="radio" name="tipo" value="Administração +"> Administração +</label>
-    <label class="check"><input type="radio" name="tipo" value="Denúncias"> Denúncias</label>
-   </div>
-  </div>
-  <div class="field"><label>Observações</label><textarea id="obs" placeholder="Descreva o atendimento realizado..."></textarea></div>
-  <div class="field"><label>Provas</label><input id="proof" type="file" multiple accept="image/*,.pdf,.txt"></div>
-  <div id="proofNames" style="color:#777;font-size:11px;margin:5px 0 12px"></div>
-  <button class="btn primary" onclick="registerTicket()">✓ REGISTRAR ATENDIMENTO</button>
- </div>
- <div class="card" style="margin-top:15px"><div class="section-head"><h2>Meus atendimentos</h2></div><div id="myTickets"></div></div>
+<div class="card">
+<div class="section-head"><div><h2>🎫 Registrar Atendimento</h2><p>Registre cada ticket atendido pelo Staff.</p></div></div>
+<div class="field"><label>Tipo de Ticket</label><div class="checks">
+<label class="check"><input type="radio" name="tipo" value="Dúvidas"> Dúvidas</label>
+<label class="check"><input type="radio" name="tipo" value="Contestações de Punição"> Contestações de Punição</label>
+<label class="check"><input type="radio" name="tipo" value="Administração +"> Administração +</label>
+<label class="check"><input type="radio" name="tipo" value="Denúncias"> Denúncias</label>
+</div></div>
+<div class="field"><label>Observações</label><textarea id="obs" placeholder="Descreva o atendimento realizado..."></textarea></div>
+<div class="field"><label>Provas</label><input id="proof" type="file" multiple accept="image/*,.pdf,.txt"></div>
+<div id="proofNames" style="color:#777;font-size:11px;margin:5px 0 12px"></div>
+<button class="btn primary" onclick="registerTicket()">✓ REGISTRAR ATENDIMENTO</button>
+</div>
+<div class="card" style="margin-top:15px"><div class="section-head"><h2>Meus atendimentos</h2></div><div id="myTickets"></div></div>
 </section>
 
 <section id="consultar" class="page">
- <div class="card">
-  <div class="section-head"><div><h2>🔎 Consultar Staff</h2><p>Veja produtividade e histórico de qualquer Staff.</p></div></div>
-  <div class="field"><label>Pesquisar por nome ou Useridst</label><input id="searchStaff" oninput="renderStaffSearch()" placeholder="Digite para pesquisar..."></div>
-  <div id="searchResult"></div>
- </div>
-</section>
-</main>
+<div class="card">
+<div class="section-head"><div><h2>🔎 Consultar Staff</h2><p>Veja produtividade e histórico de qualquer Staff.</p></div></div>
+<div class="field"><label>Pesquisar por nome ou Useridst</label><input id="searchStaff" oninput="renderStaffSearch()" placeholder="Digite para pesquisar..."></div>
+<div id="searchResult"></div>
 </div>
+</section>
+</main></div>
 
-<div id="modal" class="modal"><div class="modal-box" id="modalContent"></div></div>
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="modal-box" id="modalContent"></div></div>
 <div id="toast" class="toast"></div>
 
 <script>
 const FUND={user:"FNDCPX-2026",pass:"FNDCPX-2026"};
-let db=JSON.parse(localStorage.getItem("CPX_STAFF_DB")||'{"staffs":[],"tickets":[]}');
-let current=null, loginMode="staff";
+let db;
+try{db=JSON.parse(localStorage.getItem("CPX_STAFF_DB")||'{"staffs":[],"tickets":[]}')}catch(e){db={staffs:[],tickets:[]}}
+if(!Array.isArray(db.staffs))db.staffs=[];
+if(!Array.isArray(db.tickets))db.tickets=[];
+let current=null,loginMode="staff";
 
-function save(){localStorage.setItem("CPX_STAFF_DB",JSON.stringify(db));updateStats();renderStaffList();renderRecent();renderMyTickets();renderStaffSearch()}
-function toast(t){let x=document.getElementById("toast");x.textContent=t;x.style.display="block";setTimeout(()=>x.style.display="none",2500)}
-function setLogin(mode){loginMode=mode;document.getElementById("tabStaff").classList.toggle("on",mode==="staff");document.getElementById("tabFund").classList.toggle("on",mode==="fund");document.getElementById("loginUser").value="";document.getElementById("loginPass").value="";document.getElementById("loginError").style.display="none"}
+function save(){
+localStorage.setItem("CPX_STAFF_DB",JSON.stringify(db));
+updateStats();renderStaffList();renderRecent();renderMyTickets();renderStaffSearch();
+}
+function toast(t){
+const x=document.getElementById("toast");x.textContent=t;x.style.display="block";
+clearTimeout(window.__toast);window.__toast=setTimeout(()=>x.style.display="none",2500);
+}
+function setLogin(mode){
+loginMode=mode;
+document.getElementById("tabStaff").classList.toggle("on",mode==="staff");
+document.getElementById("tabFund").classList.toggle("on",mode==="fund");
+document.getElementById("loginUser").value="";
+document.getElementById("loginPass").value="";
+document.getElementById("loginError").style.display="none";
+}
 function login(){
- let u=document.getElementById("loginUser").value.trim(),p=document.getElementById("loginPass").value;
- if(loginMode==="fund"){
-   if(u===FUND.user&&p===FUND.pass){current={user:FUND.user,role:"FUNDAÇÃO"};openApp()}
-   else fail();
- }else{
-   let s=db.staffs.find(x=>x.user.toLowerCase()===u.toLowerCase()&&x.pass===p);
-   if(s){current={...s,role:s.cargo};openApp()}else fail();
- }
+const u=document.getElementById("loginUser").value.trim(),p=document.getElementById("loginPass").value;
+if(loginMode==="fund"){
+if(u===FUND.user&&p===FUND.pass){current={user:FUND.user,role:"FUNDAÇÃO",id:"fundacao"};openApp()}else fail();
+return;
+}
+const s=db.staffs.find(x=>String(x.user).toLowerCase()===u.toLowerCase()&&x.pass===p);
+if(s){current={...s,role:s.cargo};openApp()}else fail();
 }
 function fail(){document.getElementById("loginError").style.display="block"}
 function openApp(){
- document.getElementById("loginScreen").classList.add("hidden");document.getElementById("app").classList.remove("hidden");
- document.getElementById("sideUser").textContent=current.user;document.getElementById("sideRole").textContent=current.role;
- document.getElementById("fundNav").classList.toggle("hidden",current.role!=="FUNDAÇÃO");
- document.getElementById("ticketNav").classList.toggle("hidden",current.role==="FUNDAÇÃO");
- showPage("dashboard",document.querySelector(".nav button"));
- updateStats();renderRecent();renderStaffList();renderMyTickets();renderStaffSearch()
+document.getElementById("loginScreen").classList.add("hidden");
+document.getElementById("app").classList.remove("hidden");
+document.getElementById("sideUser").textContent=current.user;
+document.getElementById("sideRole").textContent=current.role;
+document.getElementById("fundNav").classList.toggle("hidden",current.role!=="FUNDAÇÃO");
+document.getElementById("ticketNav").classList.toggle("hidden",current.role==="FUNDAÇÃO");
+showPage("dashboard",document.querySelector(".nav button"));
+updateStats();renderRecent();renderStaffList();renderMyTickets();renderStaffSearch();
 }
-function logout(){current=null;document.getElementById("app").classList.add("hidden");document.getElementById("loginScreen").classList.remove("hidden");setLogin("staff")}
+function logout(){
+current=null;
+document.getElementById("app").classList.add("hidden");
+document.getElementById("loginScreen").classList.remove("hidden");
+setLogin("staff");
+}
 function showPage(id,btn){
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");
- document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");
- const titles={dashboard:["Dashboard","Visão geral do sistema"],fundacao:["Painel Fundação","Gerenciamento de Staffs"],tickets:["Atendimentos","Registro de tickets atendidos"],consultar:["Consultar Staff","Produtividade e histórico"]};
- document.getElementById("pageTitle").textContent=titles[id][0];document.getElementById("pageSub").textContent=titles[id][1];
+if(id==="fundacao"&&current?.role!=="FUNDAÇÃO")return;
+if(id==="tickets"&&current?.role==="FUNDAÇÃO")return;
+document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+const page=document.getElementById(id);if(!page)return;
+page.classList.add("active");
+document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
+if(btn)btn.classList.add("active");
+const titles={
+dashboard:["Dashboard","Visão geral do sistema"],
+fundacao:["Painel Fundação","Gerenciamento de Staffs"],
+tickets:["Atendimentos","Registro de tickets atendidos"],
+consultar:["Consultar Staff","Produtividade e histórico"]
+};
+document.getElementById("pageTitle").textContent=titles[id][0];
+document.getElementById("pageSub").textContent=titles[id][1];
 }
 function createStaff(){
- if(current.role!=="FUNDAÇÃO")return;
- let user=document.getElementById("newUser").value.trim(),id=document.getElementById("newId").value.trim(),pass=document.getElementById("newPass").value.trim(),cargo=document.getElementById("newCargo").value;
- if(!user||!id||!pass)return toast("Preencha todos os campos.");
- if(db.staffs.some(x=>x.user.toLowerCase()===user.toLowerCase()))return toast("Esse usuário já existe.");
- db.staffs.push({id:crypto.randomUUID(),user,useridst:id,pass,cargo,created:new Date().toISOString()});
- ["newUser","newId","newPass"].forEach(x=>document.getElementById(x).value="");save();toast("Staff cadastrado com sucesso!");
+if(current?.role!=="FUNDAÇÃO")return;
+const user=document.getElementById("newUser").value.trim();
+const id=document.getElementById("newId").value.trim();
+const pass=document.getElementById("newPass").value.trim();
+const cargo=document.getElementById("newCargo").value;
+if(!user||!id||!pass)return toast("Preencha todos os campos.");
+if(db.staffs.some(x=>String(x.user).toLowerCase()===user.toLowerCase()))return toast("Esse usuário já existe.");
+db.staffs.push({id:makeId(),user,useridst:id,pass,cargo,created:new Date().toISOString()});
+["newUser","newId","newPass"].forEach(x=>document.getElementById(x).value="");
+save();toast("Staff cadastrado com sucesso!");
 }
 function registerTicket(){
- let r=document.querySelector('input[name="tipo"]:checked'),obs=document.getElementById("obs").value.trim(),files=[...document.getElementById("proof").files];
- if(!r)return toast("Selecione o tipo de ticket.");
- if(!obs)return toast("Informe as observações.");
- db.tickets.unshift({id:crypto.randomUUID(),staff:current.user,staffId:current.id,type:r.value,obs,proofs:files.map(f=>f.name),date:new Date().toISOString()});
- document.querySelector('input[name="tipo"]:checked').checked=false;document.getElementById("obs").value="";document.getElementById("proof").value="";document.getElementById("proofNames").textContent="";
- save();toast("Atendimento registrado!");
+if(!current||current.role==="FUNDAÇÃO")return;
+const r=document.querySelector('input[name="tipo"]:checked');
+const obs=document.getElementById("obs").value.trim();
+const files=[...document.getElementById("proof").files];
+if(!r)return toast("Selecione o tipo de ticket.");
+if(!obs)return toast("Informe as observações.");
+db.tickets.unshift({
+id:makeId(),staff:current.user,staffId:current.id,type:r.value,obs,
+proofs:files.map(f=>f.name),date:new Date().toISOString()
+});
+r.checked=false;document.getElementById("obs").value="";
+document.getElementById("proof").value="";document.getElementById("proofNames").textContent="";
+save();toast("Atendimento registrado!");
 }
-document.getElementById("proof").addEventListener("change",e=>document.getElementById("proofNames").textContent=[...e.target.files].map(x=>x.name).join(" • ")||"");
+document.getElementById("proof").addEventListener("change",e=>{
+document.getElementById("proofNames").textContent=[...e.target.files].map(x=>x.name).join(" • ")||"";
+});
 function updateStats(){
- document.getElementById("statStaff").textContent=db.staffs.length;
- document.getElementById("statTickets").textContent=db.tickets.length;
- let d=new Date().toDateString();document.getElementById("statToday").textContent=db.tickets.filter(x=>new Date(x.date).toDateString()===d).length;
- document.getElementById("statTypes").textContent=new Set(db.tickets.map(x=>x.type)).size;
+document.getElementById("statStaff").textContent=db.staffs.length;
+document.getElementById("statTickets").textContent=db.tickets.length;
+const d=new Date().toDateString();
+document.getElementById("statToday").textContent=db.tickets.filter(x=>new Date(x.date).toDateString()===d).length;
+document.getElementById("statTypes").textContent=new Set(db.tickets.map(x=>x.type)).size;
 }
 function renderRecent(){
- let el=document.getElementById("recent"),a=db.tickets.slice(0,8);
- if(!a.length){el.innerHTML='<div class="empty">Nenhum atendimento registrado ainda.</div>';return}
- el.innerHTML='<table class="table"><thead><tr><th>Staff</th><th>Tipo</th><th>Observação</th><th>Data</th></tr></thead><tbody>'+
- a.map(x=>`<tr><td>${esc(x.staff)}</td><td><span class="pill">${esc(x.type)}</span></td><td>${esc(x.obs).slice(0,70)}</td><td>${fmt(x.date)}</td></tr>`).join("")+'</tbody></table>';
+const el=document.getElementById("recent"),a=db.tickets.slice(0,8);
+if(!a.length){el.innerHTML='<div class="empty">Nenhum atendimento registrado ainda.</div>';return}
+el.innerHTML='<table class="table"><thead><tr><th>Staff</th><th>Tipo</th><th>Observação</th><th>Data</th></tr></thead><tbody>'+
+a.map(x=>`<tr><td>${esc(x.staff)}</td><td><span class="pill">${esc(x.type)}</span></td><td>${esc(x.obs).slice(0,70)}${String(x.obs).length>70?"...":""}</td><td>${fmt(x.date)}</td></tr>`).join("")+
+'</tbody></table>';
 }
 function renderStaffList(){
- let el=document.getElementById("staffList");if(!el)return;
- if(!db.staffs.length){el.innerHTML='<div class="empty">Nenhum Staff cadastrado.</div>';return}
- el.innerHTML=db.staffs.map(s=>`<div class="staff-row"><div class="staff-info"><div class="avatar">${esc(s.user[0]||"S").toUpperCase()}</div><div><b>${esc(s.user)}</b><span>Useridst: ${esc(s.useridst)} • ${esc(s.cargo)}</span></div></div><div><span class="pill">${db.tickets.filter(t=>t.staffId===s.id).length} tickets</span> <button class="btn" onclick="viewStaff('${s.id}')">Ver</button></div></div>`).join("")
+const el=document.getElementById("staffList");if(!el)return;
+if(!db.staffs.length){el.innerHTML='<div class="empty">Nenhum Staff cadastrado.</div>';return}
+el.innerHTML=db.staffs.map(s=>`<div class="staff-row">
+<div class="staff-info"><div class="avatar">${esc(String(s.user||"S")[0]).toUpperCase()}</div>
+<div><b>${esc(s.user)}</b><span>Useridst: ${esc(s.useridst)} • ${esc(s.cargo)}</span></div></div>
+<div><span class="pill">${db.tickets.filter(t=>t.staffId===s.id).length} tickets</span> <button class="btn" onclick="viewStaff('${escAttr(s.id)}')">Ver</button></div>
+</div>`).join("");
 }
 function renderMyTickets(){
- let el=document.getElementById("myTickets");if(!el)return;
- let a=db.tickets.filter(x=>x.staff===current?.user);
- if(!a.length){el.innerHTML='<div class="empty">Você ainda não possui atendimentos.</div>';return}
- el.innerHTML='<table class="table"><thead><tr><th>Tipo</th><th>Observações</th><th>Provas</th><th>Data</th></tr></thead><tbody>'+
- a.map(x=>`<tr><td><span class="pill">${esc(x.type)}</span></td><td>${esc(x.obs)}</td><td>${x.proofs.length?esc(x.proofs.join(", ")):"—"}</td><td>${fmt(x.date)}</td></tr>`).join("")+'</tbody></table>';
+const el=document.getElementById("myTickets");if(!el)return;
+if(!current||current.role==="FUNDAÇÃO"){el.innerHTML='<div class="empty">A Fundação não registra atendimentos.</div>';return}
+const a=db.tickets.filter(x=>x.staffId===current.id||x.staff===current.user);
+if(!a.length){el.innerHTML='<div class="empty">Você ainda não possui atendimentos.</div>';return}
+el.innerHTML='<table class="table"><thead><tr><th>Tipo</th><th>Observações</th><th>Provas</th><th>Data</th></tr></thead><tbody>'+
+a.map(x=>`<tr><td><span class="pill">${esc(x.type)}</span></td><td>${esc(x.obs)}</td><td>${x.proofs?.length?esc(x.proofs.join(", ")):"—"}</td><td>${fmt(x.date)}</td></tr>`).join("")+
+'</tbody></table>';
 }
 function renderStaffSearch(){
- let el=document.getElementById("searchResult");if(!el)return;
- let q=(document.getElementById("searchStaff").value||"").toLowerCase();
- let arr=db.staffs.filter(s=>s.user.toLowerCase().includes(q)||s.useridst.toLowerCase().includes(q));
- if(!arr.length){el.innerHTML='<div class="empty">Nenhum Staff encontrado.</div>';return}
- el.innerHTML=arr.map(s=>{
-   let ts=db.tickets.filter(t=>t.staffId===s.id),types={};ts.forEach(t=>types[t.type]=(types[t.type]||0)+1);
-   return `<div class="card" style="margin-top:12px"><div class="section-head"><div><h2>${esc(s.user)}</h2><p>Useridst: ${esc(s.useridst)} • ${esc(s.cargo)}</p></div><span class="pill">${ts.length} atendimentos</span></div>
-   <div class="grid" style="grid-template-columns:repeat(4,1fr);margin:0 0 15px">${Object.entries(types).map(([k,v])=>`<div class="card" style="padding:13px"><b>${v}</b><div style="font-size:10px;color:#888;margin-top:3px">${esc(k)}</div></div>`).join("")||'<div 
+const el=document.getElementById("searchResult");if(!el)return;
+const input=document.getElementById("searchStaff");
+const q=(input?.value||"").toLowerCase().trim();
+const arr=db.staffs.filter(s=>Str
