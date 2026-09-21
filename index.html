@@ -276,4 +276,131 @@ function renderStaffSearch(){
 const el=document.getElementById("searchResult");if(!el)return;
 const input=document.getElementById("searchStaff");
 const q=(input?.value||"").toLowerCase().trim();
-const arr=db.staffs.filter(s=>Str
+const arr=db.staffs.filter(s=>String(s.user).toLowerCase().includes(q)||String(s.useridst).toLowerCase().includes(q));
+if(!arr.length){el.innerHTML='<div class="empty">Nenhum Staff encontrado.</div>';return}
+el.innerHTML=arr.map(s=>{
+const ts=db.tickets.filter(t=>t.staffId===s.id||t.staff===s.user);
+const types={};
+ts.forEach(t=>types[t.type]=(types[t.type]||0)+1);
+const typeCards=Object.entries(types).map(([k,v])=>`<div class="detail-box"><b>${v}</b><span>${esc(k)}</span></div>`).join("");
+return `<div class="card" style="margin-top:12px">
+<div class="section-head">
+<div>
+<h2>${esc(s.user)}</h2>
+<p>Useridst: ${esc(s.useridst)} • ${esc(s.cargo)}</p>
+</div>
+<span class="pill">${ts.length} atendimentos</span>
+</div>
+<div class="detail-grid">
+${typeCards||'<div class="empty" style="grid-column:1/-1;padding:15px">Nenhum atendimento registrado.</div>'}
+</div>
+<button class="btn primary" onclick="viewStaff('${escAttr(s.id)}')">VER HISTÓRICO COMPLETO</button>
+</div>`;
+}).join("");
+}
+
+function viewStaff(id){
+const s=db.staffs.find(x=>x.id===id);
+if(!s)return toast("Staff não encontrado.");
+
+const ts=db.tickets.filter(t=>t.staffId===s.id||t.staff===s.user);
+const types={};
+ts.forEach(t=>types[t.type]=(types[t.type]||0)+1);
+
+document.getElementById("modalContent").innerHTML=`
+<div class="section-head">
+<div>
+<h2>${esc(s.user)}</h2>
+<p>Useridst: ${esc(s.useridst)} • Cargo: ${esc(s.cargo)}</p>
+</div>
+<button class="btn" onclick="closeModal()">Fechar</button>
+</div>
+
+<div class="detail-grid">
+<div class="detail-box">
+<b>${ts.length}</b>
+<span>Total de atendimentos</span>
+</div>
+
+<div class="detail-box">
+<b>${Object.keys(types).length}</b>
+<span>Tipos utilizados</span>
+</div>
+
+<div class="detail-box">
+<b>${fmt(s.created).split(" ")[0]}</b>
+<span>Cadastro</span>
+</div>
+</div>
+
+<div class="card" style="padding:0;background:transparent;border:0;box-shadow:none">
+${
+ts.length
+?`<table class="table">
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Observações</th>
+<th>Provas</th>
+<th>Data</th>
+</tr>
+</thead>
+<tbody>
+${ts.map(t=>`
+<tr>
+<td><span class="pill">${esc(t.type)}</span></td>
+<td>${esc(t.obs)}</td>
+<td>${t.proofs?.length?esc(t.proofs.join(", ")):"—"}</td>
+<td>${fmt(t.date)}</td>
+</tr>
+`).join("")}
+</tbody>
+</table>`
+:'<div class="empty">Nenhum atendimento registrado.</div>'
+}
+</div>`;
+document.getElementById("modal").classList.add("show");
+}
+
+function closeModal(){
+document.getElementById("modal").classList.remove("show");
+}
+
+function makeId(){
+if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();
+return "id-"+Date.now()+"-"+Math.random().toString(36).slice(2);
+}
+
+function fmt(x){
+if(!x)return "—";
+const d=new Date(x);
+if(Number.isNaN(d.getTime()))return "—";
+return d.toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"});
+}
+
+function esc(x){
+return String(x??"").replace(/[&<>"']/g,m=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[m]));
+}
+
+function escAttr(x){
+return String(x??"")
+.replace(/\\/g,"\\\\")
+.replace(/'/g,"\\'")
+.replace(/"/g,"&quot;");
+}
+
+updateStats();
+renderRecent();
+renderStaffList();
+renderMyTickets();
+renderStaffSearch();
+
+</script>
+</body>
+</html>
