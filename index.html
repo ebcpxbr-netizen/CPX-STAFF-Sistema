@@ -144,17 +144,30 @@ textarea{min-height:105px;resize:vertical}.actions{display:flex;gap:10px;margin-
 <div id="toast" class="toast"></div>
 
 <script>
+const SUPABASE_URL="https://txchlpiakptbxslvebnk.supabase.co";
+const SUPABASE_KEY="sb_publishable_dIk9XbO2BXh9bNuIIUwnkA_JV0vfTZY";
+const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
 const FUND={user:"FNDCPX-2026",pass:"FNDCPX-2026"};
-let db;
-try{db=JSON.parse(localStorage.getItem("CPX_STAFF_DB")||'{"staffs":[],"tickets":[]}')}catch(e){db={staffs:[],tickets:[]}}
-if(!Array.isArray(db.staffs))db.staffs=[];
-if(!Array.isArray(db.tickets))db.tickets=[];
+let db={staffs:[],tickets:[]};
 let current=null,loginMode="staff";
 
-function save(){
-localStorage.setItem("CPX_STAFF_DB",JSON.stringify(db));
-updateStats();renderStaffList();renderRecent();renderMyTickets();renderStaffSearch();
+async function loadDB(){
+const {data:staffs,error:staffError}=await supabaseClient.from("staffs").select("*").order("created_at",{ascending:true});
+if(staffError){console.error(staffError);toast("Erro ao carregar Staffs.");return}
+const {data:tickets,error:ticketError}=await supabaseClient.from("tickets").select("*").order("created_at",{ascending:false});
+if(ticketError){console.error(ticketError);toast("Erro ao carregar Tickets.");return}
+
+db.staffs=(staffs||[]).map(s=>({
+id:s.id,user:s.nome_nick,useridst:s.user_id,pass:s.senha_login,cargo:s.cargo,created:s.created_at
+}));
+db.tickets=(tickets||[]).map(t=>({
+id:t.id,staffId:t.staff_id,staff:(staffs||[]).find(s=>s.id===t.staff_id)?.nome_nick||"",type:t.categoria,obs:t.descricao,
+proofs:t.prova_url?[t.prova_url]:[],date:t.created_at
+}));
+updateStats();renderRecent();renderStaffList();renderMyTickets();renderStaffSearch();
 }
+
 function toast(t){
 const x=document.getElementById("toast");x.textContent=t;x.style.display="block";
 clearTimeout(window.__toast);window.__toast=setTimeout(()=>x.style.display="none",2500);
@@ -167,12 +180,13 @@ document.getElementById("loginUser").value="";
 document.getElementById("loginPass").value="";
 document.getElementById("loginError").style.display="none";
 }
-function login(){
+async function login(){
 const u=document.getElementById("loginUser").value.trim(),p=document.getElementById("loginPass").value;
 if(loginMode==="fund"){
-if(u===FUND.user&&p===FUND.pass){current={user:FUND.user,role:"FUNDAÇÃO",id:"fundacao"};openApp()}else fail();
+if(u===FUND.user&&p===FUND.pass){current={user:FUND.user,role:"FUNDAÇÃO",id:"fundacao"};await loadDB();openApp()}else fail();
 return;
 }
+await loadDB();
 const s=db.staffs.find(x=>String(x.user).toLowerCase()===u.toLowerCase()&&x.pass===p);
 if(s){current={...s,role:s.cargo};openApp()}else fail();
 }
@@ -210,7 +224,7 @@ consultar:["Consultar Staff","Produtividade e histórico"]
 document.getElementById("pageTitle").textContent=titles[id][0];
 document.getElementById("pageSub").textContent=titles[id][1];
 }
-function createStaff(){
+async function createStaff(){
 if(current?.role!=="FUNDAÇÃO")return;
 const user=document.getElementById("newUser").value.trim();
 const id=document.getElementById("newId").value.trim();
@@ -218,24 +232,47 @@ const pass=document.getElementById("newPass").value.trim();
 const cargo=document.getElementById("newCargo").value;
 if(!user||!id||!pass)return toast("Preencha todos os campos.");
 if(db.staffs.some(x=>String(x.user).toLowerCase()===user.toLowerCase()))return toast("Esse usuário já existe.");
-db.staffs.push({id:makeId(),user,useridst:id,pass,cargo,created:new Date().toISOString()});
+
+const {data,error}=await supabaseClient.from("staffs").insert({
+nome_nick:user,user_id:id,senha_login:pass,cargo,ativo:true
+}).select().single();
+
+if(error){console.error(error);return toast("Erro ao cadastrar Staff.");}
+
+db.staffs.push({
+id:data.id,user:data.nome_nick,useridst:data.user_id,pass:data.senha_login,cargo:data.cargo,created:data.created_at
+});
 ["newUser","newId","newPass"].forEach(x=>document.getElementById(x).value="");
-save();toast("Staff cadastrado com sucesso!");
+saveUI();toast("Staff cadastrado com sucesso!");
 }
-function registerTicket(){
+async function registerTicket(){
 if(!current||current.role==="FUNDAÇÃO")return;
 const r=document.querySelector('input[name="tipo"]:checked');
 const obs=document.getElementById("obs").value.trim();
 const files=[...document.getElementById("proof").files];
 if(!r)return toast("Selecione o tipo de ticket.");
 if(!obs)return toast("Informe as observações.");
+
+const {data,error}=await supabaseClient.from("tickets").insert({
+staff_id:current.id,
+usuario_atendido:current.user,
+categoria:r.value,
+descricao:obs,
+prova_url:files.length?files.map(f=>f.name).join(", "):null
+}).select().single();
+
+if(error){console.error(error);return toast("Erro ao registrar atendimento.");}
+
 db.tickets.unshift({
-id:makeId(),staff:current.user,staffId:current.id,type:r.value,obs,
-proofs:files.map(f=>f.name),date:new Date().toISOString()
+id:data.id,staff:current.user,staffId:data.staff_id,type:data.categoria,obs:data.descricao,
+proofs:data.prova_url?[data.prova_url]:[],date:data.created_at
 });
 r.checked=false;document.getElementById("obs").value="";
 document.getElementById("proof").value="";document.getElementById("proofNames").textContent="";
-save();toast("Atendimento registrado!");
+saveUI();toast("Atendimento registrado!");
+}
+function saveUI(){
+updateStats();renderStaffList();renderRecent();renderMyTickets();renderStaffSearch();
 }
 document.getElementById("proof").addEventListener("change",e=>{
 document.getElementById("proofNames").textContent=[...e.target.files].map(x=>x.name).join(" • ")||"";
@@ -256,33 +293,84 @@ a.map(x=>`<tr><td>${esc(x.staff)}</td><td><span class="pill">${esc(x.type)}</spa
 }
 function renderStaffList(){
 const el=document.getElementById("staffList");if(!el)return;
-if(!db.staffs.length){el.innerHTML='<div class="empty">Nenhum Staff cadastrado.</div>';return}
+if(!db.staffs.length){
+el.innerHTML='<div class="empty">Nenhum Staff cadastrado.</div>';
+return;
+}
+
 el.innerHTML=db.staffs.map(s=>`<div class="staff-row">
-<div class="staff-info"><div class="avatar">${esc(String(s.user||"S")[0]).toUpperCase()}</div>
-<div><b>${esc(s.user)}</b><span>Useridst: ${esc(s.useridst)} • ${esc(s.cargo)}</span></div></div>
-<div><span class="pill">${db.tickets.filter(t=>t.staffId===s.id).length} tickets</span> <button class="btn" onclick="viewStaff('${escAttr(s.id)}')">Ver</button></div>
+<div class="staff-info">
+<div class="avatar">${esc(String(s.user||"S")[0]).toUpperCase()}</div>
+<div>
+<b>${esc(s.user)}</b>
+<span>Useridst: ${esc(s.useridst)} • ${esc(s.cargo)}</span>
+</div>
+</div>
+<div>
+<span class="pill">${db.tickets.filter(t=>t.staffId===s.id).length} tickets</span>
+<button class="btn" onclick="viewStaff('${escAttr(s.id)}')">Ver</button>
+</div>
 </div>`).join("");
 }
+
 function renderMyTickets(){
-const el=document.getElementById("myTickets");if(!el)return;
-if(!current||current.role==="FUNDAÇÃO"){el.innerHTML='<div class="empty">A Fundação não registra atendimentos.</div>';return}
+const el=document.getElementById("myTickets");
+if(!el)return;
+
+if(!current||current.role==="FUNDAÇÃO"){
+el.innerHTML='<div class="empty">A Fundação não registra atendimentos.</div>';
+return;
+}
+
 const a=db.tickets.filter(x=>x.staffId===current.id||x.staff===current.user);
-if(!a.length){el.innerHTML='<div class="empty">Você ainda não possui atendimentos.</div>';return}
+
+if(!a.length){
+el.innerHTML='<div class="empty">Você ainda não possui atendimentos.</div>';
+return;
+}
+
 el.innerHTML='<table class="table"><thead><tr><th>Tipo</th><th>Observações</th><th>Provas</th><th>Data</th></tr></thead><tbody>'+
-a.map(x=>`<tr><td><span class="pill">${esc(x.type)}</span></td><td>${esc(x.obs)}</td><td>${x.proofs?.length?esc(x.proofs.join(", ")):"—"}</td><td>${fmt(x.date)}</td></tr>`).join("")+
+a.map(x=>`<tr>
+<td><span class="pill">${esc(x.type)}</span></td>
+<td>${esc(x.obs)}</td>
+<td>${x.proofs?.length?esc(x.proofs.join(", ")):"—"}</td>
+<td>${fmt(x.date)}</td>
+</tr>`).join("")+
 '</tbody></table>';
 }
+
 function renderStaffSearch(){
-const el=document.getElementById("searchResult");if(!el)return;
+const el=document.getElementById("searchResult");
+if(!el)return;
+
 const input=document.getElementById("searchStaff");
 const q=(input?.value||"").toLowerCase().trim();
-const arr=db.staffs.filter(s=>String(s.user).toLowerCase().includes(q)||String(s.useridst).toLowerCase().includes(q));
-if(!arr.length){el.innerHTML='<div class="empty">Nenhum Staff encontrado.</div>';return}
+
+const arr=db.staffs.filter(s=>
+String(s.user).toLowerCase().includes(q)||
+String(s.useridst).toLowerCase().includes(q)
+);
+
+if(!arr.length){
+el.innerHTML='<div class="empty">Nenhum Staff encontrado.</div>';
+return;
+}
+
 el.innerHTML=arr.map(s=>{
 const ts=db.tickets.filter(t=>t.staffId===s.id||t.staff===s.user);
 const types={};
-ts.forEach(t=>types[t.type]=(types[t.type]||0)+1);
-const typeCards=Object.entries(types).map(([k,v])=>`<div class="detail-box"><b>${v}</b><span>${esc(k)}</span></div>`).join("");
+
+ts.forEach(t=>{
+types[t.type]=(types[t.type]||0)+1;
+});
+
+const typeCards=Object.entries(types).map(([k,v])=>
+`<div class="detail-box">
+<b>${v}</b>
+<span>${esc(k)}</span>
+</div>`
+).join("");
+
 return `<div class="card" style="margin-top:12px">
 <div class="section-head">
 <div>
@@ -291,21 +379,32 @@ return `<div class="card" style="margin-top:12px">
 </div>
 <span class="pill">${ts.length} atendimentos</span>
 </div>
+
 <div class="detail-grid">
 ${typeCards||'<div class="empty" style="grid-column:1/-1;padding:15px">Nenhum atendimento registrado.</div>'}
 </div>
-<button class="btn primary" onclick="viewStaff('${escAttr(s.id)}')">VER HISTÓRICO COMPLETO</button>
+
+<button class="btn primary" onclick="viewStaff('${escAttr(s.id)}')">
+VER HISTÓRICO COMPLETO
+</button>
 </div>`;
 }).join("");
 }
 
 function viewStaff(id){
 const s=db.staffs.find(x=>x.id===id);
-if(!s)return toast("Staff não encontrado.");
+
+if(!s){
+toast("Staff não encontrado.");
+return;
+}
 
 const ts=db.tickets.filter(t=>t.staffId===s.id||t.staff===s.user);
 const types={};
-ts.forEach(t=>types[t.type]=(types[t.type]||0)+1);
+
+ts.forEach(t=>{
+types[t.type]=(types[t.type]||0)+1;
+});
 
 document.getElementById("modalContent").innerHTML=`
 <div class="section-head">
@@ -313,10 +412,12 @@ document.getElementById("modalContent").innerHTML=`
 <h2>${esc(s.user)}</h2>
 <p>Useridst: ${esc(s.useridst)} • Cargo: ${esc(s.cargo)}</p>
 </div>
+
 <button class="btn" onclick="closeModal()">Fechar</button>
 </div>
 
 <div class="detail-grid">
+
 <div class="detail-box">
 <b>${ts.length}</b>
 <span>Total de atendimentos</span>
@@ -331,12 +432,15 @@ document.getElementById("modalContent").innerHTML=`
 <b>${fmt(s.created).split(" ")[0]}</b>
 <span>Cadastro</span>
 </div>
+
 </div>
 
 <div class="card" style="padding:0;background:transparent;border:0;box-shadow:none">
+
 ${
 ts.length
-?`<table class="table">
+?`
+<table class="table">
 <thead>
 <tr>
 <th>Tipo</th>
@@ -345,7 +449,9 @@ ts.length
 <th>Data</th>
 </tr>
 </thead>
+
 <tbody>
+
 ${ts.map(t=>`
 <tr>
 <td><span class="pill">${esc(t.type)}</span></td>
@@ -354,11 +460,15 @@ ${ts.map(t=>`
 <td>${fmt(t.date)}</td>
 </tr>
 `).join("")}
+
 </tbody>
-</table>`
+</table>
+`
 :'<div class="empty">Nenhum atendimento registrado.</div>'
 }
+
 </div>`;
+
 document.getElementById("modal").classList.add("show");
 }
 
@@ -366,16 +476,17 @@ function closeModal(){
 document.getElementById("modal").classList.remove("show");
 }
 
-function makeId(){
-if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();
-return "id-"+Date.now()+"-"+Math.random().toString(36).slice(2);
-}
-
 function fmt(x){
 if(!x)return "—";
+
 const d=new Date(x);
+
 if(Number.isNaN(d.getTime()))return "—";
-return d.toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"});
+
+return d.toLocaleString("pt-BR",{
+dateStyle:"short",
+timeStyle:"short"
+});
 }
 
 function esc(x){
@@ -395,11 +506,17 @@ return String(x??"")
 .replace(/"/g,"&quot;");
 }
 
+async function init(){
+await loadDB();
+
 updateStats();
 renderRecent();
 renderStaffList();
 renderMyTickets();
 renderStaffSearch();
+}
+
+init();
 
 </script>
 </body>
